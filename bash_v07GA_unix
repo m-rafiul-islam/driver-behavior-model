@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#SBATCH --nodes=1 # request one node
+#SBATCH --cpus-per-task=1  # ask for 1 cpu
+#SBATCH --mem=4G # Maximum amount of memory this job will be given, try to estimate this to the best of your ability. This asks for 1 GB of ram.
+#SBATCH --time=0-10:59:00 # ask that the job be allowed to run for 30 minutes.
+#SBATCH --partition=biocrunch 
+#SBATCH --array=200-299%50 #specify how many times you want a job to run, we have a total of 7 array spaces
+
+# everything below this line is optional, but are nice to have quality of life things
+cd /work/LAS/ckadelka-lab/BDM/CodesRafi
+
+# under this line, we can load any modules if necessary
+module load gcc/7.3.0-xegsmw4
+module load python/3.7.8-vzxxni7
+ 
+module load py-numpy/1.18.1-py3-d27wxj2 py-scipy/1.1.0-py3-pzig4lr py-pandas/0.23.4-py3-sx6iffy
+
+# activate python virtual environment
+# . env2/bin/activate
+
+
+#below this line is where we can place our commands, in this case it will just simply output the task ID of the array
+python parameter_estimation07.py $SLURM_ARRAY_TASK_ID 15
+
